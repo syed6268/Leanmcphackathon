@@ -5,6 +5,7 @@ import { randomUUID } from "node:crypto";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { createMCPServer } from "./mcp-server.js";
+import { connectDB, closeDB, initializeWallet } from "./db.js";
 // Load environment variables
 dotenv.config();
 const app = express();
@@ -153,7 +154,36 @@ app.get('/mcp', async (req, res) => {
         res.status(500).send('<h1>Dashboard temporarily unavailable</h1><p>Please try again later.</p>');
     }
 });
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server running`);
-});
+// Initialize MongoDB and start the server
+async function startServer() {
+    try {
+        // Connect to MongoDB
+        await connectDB();
+        console.log("✅ MongoDB connected successfully");
+        // Initialize wallet with default balance
+        await initializeWallet();
+        console.log("✅ Wallet initialized");
+        // Start Express server
+        app.listen(PORT, () => {
+            console.log(`✅ Server running on port ${PORT}`);
+            console.log(`🔗 Health check: http://localhost:${PORT}/health`);
+            console.log(`🔗 MCP endpoint: http://localhost:${PORT}/mcp`);
+        });
+        // Handle graceful shutdown
+        process.on('SIGINT', async () => {
+            console.log('\n🛑 Shutting down gracefully...');
+            await closeDB();
+            process.exit(0);
+        });
+        process.on('SIGTERM', async () => {
+            console.log('\n🛑 Shutting down gracefully...');
+            await closeDB();
+            process.exit(0);
+        });
+    }
+    catch (error) {
+        console.error('❌ Failed to start server:', error);
+        process.exit(1);
+    }
+}
+startServer();
