@@ -32,7 +32,7 @@ export function setupMinimalTool(server: McpServer): void {
         return {
           content: [{
             type: "text",
-            text: `Error fetching portfolio: ${error.message}`
+            text: `Error fetching portfolio: ${error instanceof Error ? error.message : String(error)}`
           }]
         };
       }
@@ -64,7 +64,7 @@ export function setupMinimalTool(server: McpServer): void {
         return {
           content: [{
             type: "text",
-            text: `Error analyzing P&L: ${error.message}`
+            text: `Error analyzing P&L: ${error instanceof Error ? error.message : String(error)}`
           }]
         };
       }
@@ -96,7 +96,7 @@ export function setupMinimalTool(server: McpServer): void {
         return {
           content: [{
             type: "text",
-            text: `Error calculating risk metrics: ${error.message}`
+            text: `Error calculating risk metrics: ${error instanceof Error ? error.message : String(error)}`
           }]
         };
       }
@@ -128,7 +128,7 @@ export function setupMinimalTool(server: McpServer): void {
         return {
           content: [{
             type: "text",
-            text: `Error analyzing stock: ${error.message}`
+            text: `Error analyzing stock: ${error instanceof Error ? error.message : String(error)}`
           }]
         };
       }
@@ -161,7 +161,7 @@ export function setupMinimalTool(server: McpServer): void {
         return {
           content: [{
             type: "text",
-            text: `Error generating trade suggestions: ${error.message}`
+            text: `Error generating trade suggestions: ${error instanceof Error ? error.message : String(error)}`
           }]
         };
       }
@@ -193,7 +193,7 @@ export function setupMinimalTool(server: McpServer): void {
         return {
           content: [{
             type: "text",
-            text: `Error fetching market data: ${error.message}`
+            text: `Error fetching market data: ${error instanceof Error ? error.message : String(error)}`
           }]
         };
       }

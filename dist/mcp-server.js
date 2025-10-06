@@ -8,22 +8,22 @@ import { setupMinimalPrompt } from "./minimal/prompt.js";
 export function createMCPServer() {
     const serverName = "robinhood-portfolio-mcp";
     const serverVersion = "1.0.0";
-    console.log(`🔧 Creating MCP server: ${serverName} v${serverVersion}`);
+    console.error(`🔧 Creating MCP server: ${serverName} v${serverVersion}`);
     // Create the MCP server instance
     const server = new McpServer({
         name: serverName,
         version: serverVersion
     });
-    console.log("📦 Registering minimal MCP capabilities...");
+    console.error("📦 Registering minimal MCP capabilities...");
     // Register resources
     setupMinimalResource(server);
-    console.log("✅ Resource registered: server-info");
+    console.error("✅ Resource registered: server-info");
     // Register tools  
     setupMinimalTool(server);
-    console.log("✅ Tool registered: echo");
+    console.error("✅ Tool registered: echo");
     // Register prompts
     setupMinimalPrompt(server);
-    console.log("✅ Prompt registered: greeting");
-    console.log("🎉 Minimal MCP server configuration completed");
+    console.error("✅ Prompt registered: greeting");
+    console.error("🎉 Minimal MCP server configuration completed");
     return server;
 }
